@@ -33,7 +33,7 @@ for i in range(1,len(tr)):
 			dic["Image"]=" "+img.get("src")[2:].replace("100px","300px")+" "
 		elif j==3:
 			dic["Year"]=" "+filter(lambda x:ord(x)>31 and ord(x)<128,td[j].text)+" "
-			dic["display_order"]=["Rank","Name","Location","Year","Built By","Image","Link"]
+			dic["display_order"]=["Rank","Name","Location","Year","Built By","Image"]
 	if dic["Name"]==" Great Wall of China ":
 		dic["Built By"]=" Soldiers, Common People and Criminals "
 	elif dic["Name"]==" Great Pyramid of Giza ":
