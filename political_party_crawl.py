@@ -1,0 +1,50 @@
+import urllib2
+l=[]
+disp=[]
+dic={}
+from bs4 import BeautifulSoup as bs
+url="https://en.wikipedia.org/wiki/List_of_political_parties_in_India"
+data=urllib2.urlopen(url).read()
+data=data.split('<table class="wikitable sortable">',1)
+data=data[1]
+data=data.split("</table>",1)
+data=data[0]
+soup=bs(str(data))
+tr=soup.findAll("tr")
+soup1=bs(str(tr[0]))
+tr=tr[1:]
+th=soup1.findAll("th")
+for i in th:
+	l.append(i.text.replace("\n"," "))
+del l[0]
+print l
+for i in tr:
+	soup2=bs(str(i))
+	td=soup2.findAll("td")
+	k=0
+	for j in range(1,len(td)):
+		a=td[j].text.replace("\n"," ")
+		try:
+			a=a[:a.index("[")]
+		except:
+			pass
+		if len(a)>0:
+			dic[l[k]]=" "+a+" "
+			disp.append(l[k])
+		if l[k]=="Name":
+			soup3=bs(str(td[j]))
+			a=soup3.find("a")
+			dic["Link"]="https://en.wikipedia.org"+a.get("href")
+			#getDesc(dic["Link"])
+		if l[k]=="Symbol":
+			soup3=bs(str(td[j]))
+			img=soup3.find("img")
+			img=img.get("src")[2:]
+			dic["Image"]=" "+img+" "
+		k=k+1
+	disp.append("Image")
+	disp.append("Link")
+	dic["display_order"]=disp
+	print dic
+	dic={}
+	disp=[]
