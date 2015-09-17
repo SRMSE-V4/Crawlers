@@ -1,0 +1,82 @@
+import urllib2
+import json
+import pymongo
+client=pymongo.MongoClient("192.168.101.5")
+db=client.kbnew
+companies=db.companies
+d=urllib2.urlopen("http://www.forbes.com/ajax/list/data?year=2015&uri=global2000&type=organization").read()
+d=json.loads(d)
+dic={}
+disp=[]
+for i in d:
+	disp=[]
+	try:
+		dic["Rank"]=i["rank"]
+		disp.append("Rank")
+	except:
+		pass
+	try:
+		dic["Company Name"]=i["name"]
+		disp.append("Company Name")
+	except:
+		pass
+	try:
+		dic["Company Logo"]="http://i.forbesimg.com/media/lists/companies/"+i["imageUri"]+"_200x200.jpg"
+		disp.append("Company Logo")
+	except:
+		pass
+	try:
+		dic["Industry"]=i["industry"]
+		disp.append("Industry")
+	except:
+		pass
+	try:
+		dic["Country"]=i["country"]
+		disp.append("Country")
+	except:
+		pass
+	try:
+		dic["Revenue"]=i["revenue"]
+		disp.append("Revenue")
+	except:
+		pass
+	try:
+		dic["Market Value"]=i["marketValue"]
+		disp.append("Market Value")
+	except:
+		pass
+	try:
+		dic["Headquaters"]=i["headquarters"]
+		disp.append("Headquaters")
+	except:
+		pass
+	try:
+		dic["State"]=i["state"]
+		disp.append("State")
+	except:
+		pass
+	try:
+		dic["CEO"]=i["ceo"]
+		disp.append("CEO")
+	except:
+		pass
+	try:
+		dic["Profits"]=i["profits"]
+		disp.append("Profits")
+	except:
+		pass
+	try:
+		dic["Assets"]=i["assets"]
+		disp.append("Assets")
+	except:
+		pass
+	try:
+		dic["Company Link"]="http://www.forbes.com/companies/"+i["uri"]
+		disp.append("Company Link")
+	except:
+		pass
+	dic["display_order"]=disp
+	print dic
+	companies.insert(dic)
+	dic={}
+	
